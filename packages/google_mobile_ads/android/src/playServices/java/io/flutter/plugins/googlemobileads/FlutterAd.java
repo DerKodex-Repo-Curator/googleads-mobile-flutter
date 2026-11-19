@@ -281,7 +281,7 @@ abstract class FlutterAd {
 
     /**
      * The error reported by the mediation adapter that caused this error, serialized to Dart as
-     * {@code AdError.mediationError}. Not currently populated by this SDK variant.
+     * {@code AdError.mediationError}.
      */
     @Nullable final FlutterAdError mediationError;
 
