@@ -279,16 +279,29 @@ abstract class FlutterAd {
     @NonNull final String domain;
     @NonNull final String message;
 
+    /**
+     * The error reported by the mediation adapter that caused this error, serialized to Dart as
+     * {@code AdError.mediationError}. Not currently populated by this SDK variant.
+     */
+    @Nullable final FlutterAdError mediationError;
+
     FlutterAdError(@NonNull AdError error) {
-      code = error.getCode();
-      domain = error.getDomain();
-      message = error.getMessage();
+      this(error.getCode(), error.getDomain(), error.getMessage(), null);
     }
 
     FlutterAdError(int code, @NonNull String domain, @NonNull String message) {
+      this(code, domain, message, null);
+    }
+
+    FlutterAdError(
+        int code,
+        @NonNull String domain,
+        @NonNull String message,
+        @Nullable FlutterAdError mediationError) {
       this.code = code;
       this.domain = domain;
       this.message = message;
+      this.mediationError = mediationError;
     }
 
     @Override
@@ -300,18 +313,15 @@ abstract class FlutterAd {
       }
 
       final FlutterAdError that = (FlutterAdError) object;
-
-      if (code != that.code) {
-        return false;
-      } else if (!domain.equals(that.domain)) {
-        return false;
-      }
-      return message.equals(that.message);
+      return code == that.code
+          && domain.equals(that.domain)
+          && message.equals(that.message)
+          && Objects.equals(mediationError, that.mediationError);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(code, domain, message);
+      return Objects.hash(code, domain, message, mediationError);
     }
   }
 
